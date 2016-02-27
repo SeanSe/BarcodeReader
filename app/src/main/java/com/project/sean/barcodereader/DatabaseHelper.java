@@ -59,8 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(Item.TABLE_NAME, null, contentValues);
         if(result == -1) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -75,5 +74,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    /**
+     * Update the data of a given itemId
+     */
+    public boolean updateData(String itemId, String itemName, String itemPrice) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        //Var1. Column name, Var2. Value
+        contentValues.put(Item.COL_ID, itemId);
+        contentValues.put(Item.COL_NAME, itemName);
+        contentValues.put(Item.COL_PRICE, itemPrice);
+        //Var1. Table name, Var2. Content value, Var3. Condition to pass - id = ?
+        //Var4. String array of ids
+        long result = db.update(Item.TABLE_NAME, contentValues, "ID = ?", new String[]{ itemId });
+        if(result == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    /**
+     *
+     */
+    public Integer deletData(String itemId)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Var1. Table name, Var2. Where clause, asks for the ID
+        //Var3. String array of values, value for the ?
+        //Returns 0 if nothing deleted
+        return  db.delete(Item.TABLE_NAME, "ID = ?", new String[] { itemId });
+    }
 }
